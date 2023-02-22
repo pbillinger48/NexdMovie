@@ -7,11 +7,11 @@ from rest_framework.response import Response
 
 # Create your views here.
 
-class MovieView(generics.ListAPIV):
+class MovieView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-class UserView(generics.ListAPIV):
+class UserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
