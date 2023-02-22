@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import logo from "./NexdMovieClear.png"
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -34,9 +35,7 @@ export default class HomePage extends Component {
     return (
       <div className="App">
         <header className="App-Title">
-          <h1>
-            NexdMovie
-          </h1>
+          <img src={logo} alt="logo" height = "150" width="200"/>
         </header>
         <header className="App-header">
           <p>
