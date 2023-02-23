@@ -29,4 +29,10 @@ class CreateUserView(APIView):
 class CreateMovieView(APIView):
     serializer_class = CreateMovieSerializer
     def post(self, request, format=None):
-        pass
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            title = serializer.data.get('title')
+            rating = serializer.data.get('rating')
+            movie = Movie(title = title, rating = rating)
+            movie.save()
+            return Response(UserSerializer(movie).data,status=status.HTTP_201_CREATED)

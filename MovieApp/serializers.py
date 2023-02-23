@@ -4,12 +4,13 @@ from .models import Movie, User
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('id', 'tmdbID', 'title')
+        fields = ('TmDbid', 'title', 'release_date', 'overview', 'popularity', 
+                  'poster_path', 'genre_ids', 'vote_average', 'rating','cast', 'crew')
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('userName', 'user_films_dict')
+        fields = ('userName', 'user_films_dict', 'movies')
 
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,4 +21,4 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class CreateMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('title',)
+        fields = ('title', 'rating')
