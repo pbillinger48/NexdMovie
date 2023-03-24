@@ -13,8 +13,14 @@ def get_user_films_dict(username):
     pageSoup = BeautifulSoup("", 'html.parser')
 
     #Parse the page number from the document, and then get the value of the last page
-    pages = profileSoup.find("div", {"class": "pagination"}).find_all("li", {"class": "paginate-page"})
-    lastPageNumber = int(pages[-1].text)
+
+    #FIXXXXX ISSSSSUEEEE
+    pages = profileSoup.find("div", {"class": "pagination"})
+    if pages is not None:
+        pages= profileSoup.find("div", {"class": "pagination"}).find_all("li", {"class": "paginate-page"})
+        lastPageNumber = int(pages[-1].text)
+    else:
+        lastPageNumber = 1
 
     # Use BeautifulSoup to loop through each page and parse the HTML and extract the watched films
     for i in range(1, lastPageNumber + 1):
