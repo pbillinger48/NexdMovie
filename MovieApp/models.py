@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from .Scraper import get_user_films_dict
+from .Scraper import get_user_films_dict, get_Positive_user_films_dict
 import requests
 import json
+from .EZReccomender import get_reccomendations
 #from .MovieListTransfer import gather_credits_and_info
 
 TMDB_API_KEY = 'a497a7718fd66875ff47bd0a20cd4b24'
@@ -70,10 +71,13 @@ class MovieList(models.Model):
 class User(models.Model):
     userName = models.CharField(max_length=50, default="defaultUsername")
     user_films_dict = models.JSONField(default=dict)
+    movie_reccs_dict = models.JSONField(default=dict)
     movies = models.ManyToManyField('Movie')
     
     def save(self, *args, **kwargs):
-        self.user_films_dict = get_user_films_dict(self.userName)      
+        self.user_films_dict = get_user_films_dict(self.userName)
+        #self.user_films_dict = get_Positive_user_films_dict(self.userName)   
+        self.movie_reccs_dict = get_reccomendations(self.user_films_dict)   
         super().save(*args, **kwargs)   
         #self.create_movie_list()      
 
