@@ -42,7 +42,15 @@ def get_reccomendations(movieDict):
             #break
         #i += 1
     recommendations = dict(sorted(recommendations.items(), key=lambda x: x[1], reverse=True))
-    return recommendations
+    #return recommendations
+    top_recommendations = {}
+    counter = 0
+    for recommendation_title in recommendations:
+        top_recommendations[recommendation_title] = recommendations[recommendation_title]
+        counter += 1
+        if counter == 5:
+            break
+    return top_recommendations
             
 
 #username = 'Greenellie'

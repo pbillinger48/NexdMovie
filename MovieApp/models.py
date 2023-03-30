@@ -72,7 +72,8 @@ class User(models.Model):
     userName = models.CharField(max_length=50, default="defaultUsername")
     user_films_dict = models.JSONField(default=dict)
     movie_reccs_dict = models.JSONField(default=dict)
-    movies = models.ManyToManyField('Movie')
+    movies = models.ManyToManyField(Movie, related_name= 'movie_reccs')
+    moviereccs = models.ManyToManyField('Movie', related_name='reccomended_by')
     
     def save(self, *args, **kwargs):
         self.user_films_dict = get_user_films_dict(self.userName)
@@ -83,14 +84,18 @@ class User(models.Model):
 
     def create_movie_list(self):
         self.movies.clear()
-        new_dict = {}
-        for key, value in self.user_films_dict.items():
-            new_dict[key] = value        
-        for title, rating in new_dict.items():           
+        self.moviereccs.clear()
+        for title, rating in self.user_films_dict.items():          
             movie=Movie(title=title, rating=rating)
             movie.gather_info_and_credits()
             movie.save()
-            self.movies.add(movie)    
+            self.movies.add(movie)
+        for title, rating in self.movie_reccs_dict.items():           
+            movie=Movie(title=title, rating=rating)
+            movie.gather_info_and_credits()
+            movie.save()
+            self.moviereccs.add(movie)                 
+          
 
 
         

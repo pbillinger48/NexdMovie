@@ -6,7 +6,8 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',      
+      userName: '',
+      moviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'] // an array of empty image sources      
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
@@ -47,6 +48,10 @@ export default class HomePage extends Component {
           </button>
         </header>
         <body className="App-Body">
+           {/* render the empty image sources */}
+           {this.state.moviePosters.map((poster, index) => (
+            <img key={index} src={poster} alt={`movie poster ${index}`} style={{margin: "20px"}}/>
+          ))}
         </body>
       </div>
     );

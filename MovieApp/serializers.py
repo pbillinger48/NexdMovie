@@ -10,7 +10,7 @@ class MovieSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('userName', 'user_films_dict' ,'movie_reccs_dict', 'movies')
+        fields = ('userName', 'user_films_dict' ,'movie_reccs_dict', 'movies', 'moviereccs')
 
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
