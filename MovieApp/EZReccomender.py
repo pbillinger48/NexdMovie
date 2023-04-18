@@ -13,7 +13,7 @@ def get_movie_recommendations(movie_title):
         recommendations = [result["title"] for result in data["results"]]
         return recommendations
 
-@staticmethod  
+#@staticmethod  
 def get_movie_id(movie_title):
     # Get the movie ID for the given movie title
     response = requests.get(f"https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={movie_title}")
@@ -50,6 +50,17 @@ def get_reccomendations(movieDict):
         counter += 1
         if counter == 5:
             break
+    
+    posters = {}
+    for title, rating in top_recommendations.items():
+        response = requests.get(f"https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={title}")       
+        if response.status_code == 200:
+            data = response.json()
+            if data['total_results'] > 0:
+                poster_path = data['results'][0]['poster_path']
+                posters[title] = poster_path
+    
+    return posters
     return top_recommendations
             
 
@@ -58,7 +69,5 @@ def get_reccomendations(movieDict):
 #reccs = get_reccomendations(user_films)
 #i=0
 #for rec, rating in reccs.items():
-    #if i == 5:
-        #break
     #print(f"{rec}: {rating}")
-    #i += 1
+    

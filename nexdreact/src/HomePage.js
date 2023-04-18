@@ -7,7 +7,8 @@ export default class HomePage extends Component {
     super(props);
     this.state = {
       userName: '',
-      moviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'] // an array of empty image sources      
+      noviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'], // an array of empty image sources      
+      moviePosters:['','','','','']
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
@@ -29,7 +30,15 @@ export default class HomePage extends Component {
     };
     fetch('/MovieApp/create-user', requestOptions).then((response)=>
     response.json()
-    ).then((data)=> console.log(data));
+    ).then((data)=> {
+      const moviePosters = [];
+      for (const movie in data.movie_reccs_dict){
+        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.movie_reccs_dict[movie];
+        moviePosters.push(posterURL);
+      }
+      this.setState({ moviePosters });
+      console.log(data)
+    });
   }
 
   render() {

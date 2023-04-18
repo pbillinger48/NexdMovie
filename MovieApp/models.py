@@ -90,11 +90,11 @@ class User(models.Model):
             movie.gather_info_and_credits()
             movie.save()
             self.movies.add(movie)
-        for title, rating in self.movie_reccs_dict.items():           
-            movie=Movie(title=title, rating=rating)
-            movie.gather_info_and_credits()
-            movie.save()
-            self.moviereccs.add(movie)                 
+        #for title, rating in self.movie_reccs_dict.items():           
+            #movie=Movie(title=title, rating=rating)
+            #movie.gather_info_and_credits()
+            #movie.save()
+            #self.moviereccs.add(movie)                 
           
 
 
