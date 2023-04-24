@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 def get_user_films_dict(username):
     #Dictionary will hold title of each film, and corresponding rating from 1-10 and 0 for unrated films
@@ -94,5 +94,41 @@ def get_Positive_user_films_dict(username):
                     filmsDict[Title] = 10
                 elif Rating >= 5:
                     filmsDict[Title] = Rating
+
+    return filmsDict
+
+def get_user_films_dict_optimized(username):
+    # Dictionary will hold title of each film, and corresponding rating from 1-10 and 0 for unrated films
+    filmsDict = {}
+
+    # Use a session object to make HTTP requests
+    session = requests.Session()
+
+    # Use SoupStrainer to parse only the parts of the HTML that are necessary
+    parse_only = SoupStrainer('li', {'class': 'poster-container'})
+
+    # Use BeautifulSoup to loop through each page and parse the HTML and extract the watched films
+    page_num = 1
+    last_page_num = 1
+    while page_num <= last_page_num:
+        url = f"https://letterboxd.com/{username}/films/page/{page_num}/"
+        html = session.get(url)
+        pageSoup = BeautifulSoup(html.content, 'html.parser', parse_only=parse_only)
+        profileSoup = BeautifulSoup(html.content, 'html.parser')
+        # Get html value for each film on the page using list comprehension
+        watchedFilms = [film for film in pageSoup.find_all("li", {"class": "poster-container"})]
+
+        # Loop through each film and get title and rating using dictionary comprehension
+        filmsDict.update({film.find("div").find("img")["alt"]: 10 if (film.find("span", {"class": "rating"}) is not None and int(film.find("span", {"class": "rating"})["class"][-1][-1]) == 0) else (int(film.find("span", {"class": "rating"})["class"][-1][-1]) if film.find("span", {"class": "rating"}) is not None else 0) for film in watchedFilms})
+
+
+        # Update last page number
+        if last_page_num == 1:
+            pages = profileSoup.find("div", {"class": "pagination"})
+            if pages is not None:
+                pages= profileSoup.find("div", {"class": "pagination"}).find_all("li", {"class": "paginate-page"})
+                last_page_num = int(pages[-1].text)
+        # Increment page number
+        page_num += 1
 
     return filmsDict

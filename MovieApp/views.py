@@ -23,7 +23,7 @@ class CreateUserView(APIView):
             userName = serializer.data.get('userName')
             user = User(userName = userName)
             user.save()
-            user.create_movie_list()
+            #user.create_movie_list()
             return Response(UserSerializer(user).data,status=status.HTTP_201_CREATED)
         
 

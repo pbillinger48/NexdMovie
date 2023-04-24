@@ -1,6 +1,6 @@
 import requests
 import json
-from .Scraper import get_Positive_user_films_dict
+
 
 api_key = 'a497a7718fd66875ff47bd0a20cd4b24'
 

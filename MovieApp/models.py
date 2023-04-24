@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from .Scraper import get_user_films_dict, get_Positive_user_films_dict
+from .Scraper import get_user_films_dict, get_Positive_user_films_dict, get_user_films_dict_optimized
 import requests
 import json
 from .EZReccomender import get_reccomendations
@@ -64,32 +64,29 @@ class Movie(models.Model):
             
         self.save()
 
-            
-class MovieList(models.Model):
-    movies = models.ManyToManyField('Movie')
 
 class User(models.Model):
     userName = models.CharField(max_length=50, default="defaultUsername")
     user_films_dict = models.JSONField(default=dict)
     movie_reccs_dict = models.JSONField(default=dict)
-    movies = models.ManyToManyField(Movie, related_name= 'movie_reccs')
-    moviereccs = models.ManyToManyField('Movie', related_name='reccomended_by')
+    #movies = models.ManyToManyField(Movie, related_name= 'movie_reccs')
+    #moviereccs = models.ManyToManyField('Movie', related_name='reccomended_by')
     
     def save(self, *args, **kwargs):
-        self.user_films_dict = get_user_films_dict(self.userName)
+        self.user_films_dict = get_user_films_dict_optimized(self.userName)
         #self.user_films_dict = get_Positive_user_films_dict(self.userName)   
         self.movie_reccs_dict = get_reccomendations(self.user_films_dict)   
         super().save(*args, **kwargs)   
         #self.create_movie_list()      
 
-    def create_movie_list(self):
-        self.movies.clear()
-        self.moviereccs.clear()
-        for title, rating in self.user_films_dict.items():          
-            movie=Movie(title=title, rating=rating)
-            movie.gather_info_and_credits()
-            movie.save()
-            self.movies.add(movie)
+    #def create_movie_list(self):
+        #self.movies.clear()
+        #self.moviereccs.clear()
+       #for title, rating in self.user_films_dict.items():          
+            #movie=Movie(title=title, rating=rating)
+            #movie.gather_info_and_credits()
+            #movie.save()
+            #self.movies.add(movie)
         #for title, rating in self.movie_reccs_dict.items():           
             #movie=Movie(title=title, rating=rating)
             #movie.gather_info_and_credits()

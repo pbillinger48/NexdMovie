@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import logo from "./NexdMovieClear.png"
+import logo from "./NexdMovieClear.png";
+import {MagnifyingGlass} from 'react-loader-spinner';
+
+
+
 
 export default class HomePage extends Component {
+  
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = {    
+      isLoading: false, // new state variable
       userName: '',    
-      noviePosters:['','','','',''],
+      moviePosters:['','','','',''],
       movieTitles: [],
-      moviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'], // an array of empty image sources  
+      noviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'], // an array of empty image sources  
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
@@ -26,6 +32,7 @@ export default class HomePage extends Component {
     this.setState({
       moviePosters: ['','','','',''],
       movieTitles: [],
+      isLoading: true
     });
 
     const requestOptions = {
@@ -45,7 +52,7 @@ export default class HomePage extends Component {
         moviePosters.push(posterURL);
         movieTitles.push(movie);
       }
-      this.setState({ moviePosters, movieTitles });
+      this.setState({ moviePosters, movieTitles, isLoading: false });
       console.log(data)
     });
   }
@@ -66,17 +73,23 @@ export default class HomePage extends Component {
           </button>
         </header>
         <body className="App-Body">
-           {/* render the empty image sources */}
-           {this.state.moviePosters.map((poster, index) => (
-            <div key={index} style={{ margin: '20px' }}>
-            <img src={poster} alt={`movie poster ${index}`} style={{width:'30vw', height:'45vh', maxWidth: '95%', overflow: 'hidden'}} />
-            <p>{this.state.movieTitles[index]}</p>
-            </div>
-          ))}
+          {this.state.isLoading ?
+            <div>
+            <MagnifyingGlass color="#00BFFF" height={80} width={80} />
+            <p>Your NexdMovies are coming right up!</p>
+            </div> :
+            this.state.moviePosters.map((poster, index) => (
+              <div key={index} style={{ margin: '20px' }}>
+                <img src={poster} alt={`movie poster ${index}`} style={{width:'30vw', height:'45vh', maxWidth: '95%', overflow: 'hidden'}} />
+                <p>{this.state.movieTitles[index]}</p>
+              </div>
+            ))
+          }
         </body>
       </div>
     );
   }
+  
 }
 
 
