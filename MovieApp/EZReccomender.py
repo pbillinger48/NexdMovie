@@ -58,7 +58,8 @@ def get_reccomendations(movieDict):
             data = response.json()
             if data['total_results'] > 0:
                 poster_path = data['results'][0]['poster_path']
-                posters[title] = poster_path
+                id = data['results'][0]['id']
+                posters[title] = {"id": id, "poster": poster_path}
     
     return posters
     return top_recommendations

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import logo from "./NexdMovieClear.png";
 import {MagnifyingGlass} from 'react-loader-spinner';
-
+import {Link} from 'react-router-dom';
 
 
 
@@ -13,9 +13,9 @@ export default class HomePage extends Component {
     this.state = {    
       isLoading: false, // new state variable
       userName: '',    
-      moviePosters:['','','','',''],
+      noviePosters:['https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png'],
       movieTitles: [],
-      noviePosters: ['https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', 'https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg','https://image.tmdb.org/t/p/w300/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'], // an array of empty image sources  
+      moviePosters: [], // an array of empty image sources  
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
@@ -28,10 +28,14 @@ export default class HomePage extends Component {
   }
 
   handleButtonClick(){
-
+    if (!this.state.userName.trim()) {
+      // if the input field is empty or contains only whitespace characters
+      return;
+    }
     this.setState({
       moviePosters: ['','','','',''],
       movieTitles: [],
+      movieIDSURL: [],
       isLoading: true
     });
 
@@ -47,12 +51,14 @@ export default class HomePage extends Component {
     ).then((data)=> {
       const moviePosters = [];
       const movieTitles = [];
+      const movieIDSURL = [];
       for (const movie in data.movie_reccs_dict){
-        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.movie_reccs_dict[movie];
+        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.movie_reccs_dict[movie]['poster'];
         moviePosters.push(posterURL);
         movieTitles.push(movie);
+        movieIDSURL.push('https://letterboxd.com/tmdb/' + data.movie_reccs_dict[movie]['id']);
       }
-      this.setState({ moviePosters, movieTitles, isLoading: false });
+      this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
       console.log(data)
     });
   }
@@ -73,19 +79,32 @@ export default class HomePage extends Component {
           </button>
         </header>
         <body className="App-Body">
-          {this.state.isLoading ?
-            <div>
+        {this.state.isLoading ? (
+          <div>
             <MagnifyingGlass color="#00BFFF" height={80} width={80} />
             <p>Your NexdMovies are coming right up!</p>
-            </div> :
-            this.state.moviePosters.map((poster, index) => (
-              <div key={index} style={{ margin: '20px' }}>
-                <img src={poster} alt={`movie poster ${index}`} style={{width:'30vw', height:'45vh', maxWidth: '95%', overflow: 'hidden'}} />
-                <p>{this.state.movieTitles[index]}</p>
-              </div>
-            ))
-          }
-        </body>
+          </div>
+        ) : this.state.moviePosters.length === 0 ? (
+          <p>Your NexdMovies will be displayed here!</p>
+        ) : (
+          this.state.moviePosters.map((poster, index) => (
+            <div key={index} style={{ margin: "20px" }}>
+              <a href = {this.state.movieIDSURL[index]}>
+              <img
+                src={poster}
+                style={{
+                  width: "30vw",
+                  height: "45vh",
+                  maxWidth: "95%",
+                  overflow: "hidden",
+                }}
+              />
+              </a>
+              <p>{this.state.movieTitles[index]}</p>
+            </div>
+          ))
+        )}
+      </body>
       </div>
     );
   }
