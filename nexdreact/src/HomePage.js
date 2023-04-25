@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import logo from "./NexdMovieClear.png";
 import {MagnifyingGlass} from 'react-loader-spinner';
-import {Link} from 'react-router-dom';
+
 
 
 
@@ -67,47 +67,51 @@ export default class HomePage extends Component {
     return (
       <div className="App">
         <header className="App-Title">
-          <img src={logo} alt="logo" height = "150" width="200"/>
+          <img src={logo} alt="logo" height="150" width="200" />
         </header>
         <header className="App-header">
-          <p>
-            Insert Letterboxd Username: &nbsp;
-          </p>
-          <input type="text" onChange={this.handleInputChange} />
-          <button onClick={this.handleButtonClick}>
-            Enter Username
-          </button>
+          <p className="App-font">Insert Letterboxd Username: &nbsp;</p>
+          <input className="App-input" type="text" onChange={this.handleInputChange} />
+          <button onClick={this.handleButtonClick} className="App-button">Enter Username</button>
         </header>
         <body className="App-Body">
-        {this.state.isLoading ? (
-          <div>
-            <MagnifyingGlass color="#00BFFF" height={80} width={80} />
-            <p>Your NexdMovies are coming right up!</p>
-          </div>
-        ) : this.state.moviePosters.length === 0 ? (
-          <p>Your NexdMovies will be displayed here!</p>
-        ) : (
-          this.state.moviePosters.map((poster, index) => (
-            <div key={index} style={{ margin: "20px" }}>
-              <a href = {this.state.movieIDSURL[index]}>
-              <img
-                src={poster}
-                style={{
-                  width: "30vw",
-                  height: "45vh",
-                  maxWidth: "95%",
-                  overflow: "hidden",
-                }}
-              />
-              </a>
-              <p>{this.state.movieTitles[index]}</p>
+          {this.state.isLoading ? (
+            <div>
+              <MagnifyingGlass color="#00BFFF" height={80} width={80} />
+              <p className="App-font">Your NexdMovies are coming right up!</p>
             </div>
-          ))
-        )}
-      </body>
+          ) : this.state.moviePosters.length === 0 ? (
+            <p className="App-font">Your NexdMovies will be displayed here!</p>
+          ) : (
+            <>
+              {this.state.moviePosters.map((poster, index) => (
+                <div key={index} style={{ margin: "20px" }}>
+                  <a href={this.state.movieIDSURL[index]}>
+                    <img
+                      src={poster}
+                      style={{
+                        width: "30vw",
+                        height: "45vh",
+                        maxWidth: "95%",
+                        overflow: "hidden",
+                      }}
+                    />
+                  </a>
+                  <p className="App-font">{this.state.movieTitles[index]}</p>
+                </div>
+              ))}
+              <div style={{ margin: "20px"}}>
+                {this.state.moviePosters.length > 0 && this.state.isLoading === false && (
+                  <button className="App-button">Show More</button>
+                )}
+              </div>
+            </>
+          )}
+        </body>
       </div>
     );
   }
+  
   
 }
 

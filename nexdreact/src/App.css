@@ -53,6 +53,52 @@
   color: #3bd14f;
 }
 
+.App-button{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 12px 24px;
+  border: 0;
+  color: #000021;
+  background: #1de9b6;
+  line-height: 1.15;
+  font-size: 16px;
+  margin: 20px;
+}
+
+.App-input{
+  color: rgb(36, 35, 42);
+  font-size: 16px;
+  line-height: 20px;
+  min-height: 28px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  background: rgb(251, 251, 251);
+  transition: all 0.1s ease 0s;
+}
+.App-input:focus{
+  border: 2px solid rgb(124, 138, 255);
+}
+
+.App-font{
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+.App-button:hover{
+  transition: all .1s ease;
+  box-shadow: 0 0 0 0 #fff, 0 0 0 3px #1de9b6;
+}
+
+
+
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
