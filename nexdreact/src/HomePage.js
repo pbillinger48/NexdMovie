@@ -13,7 +13,6 @@ export default class HomePage extends Component {
     this.state = {    
       isLoading: false, // new state variable
       userName: '',    
-      noviePosters:['https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png','https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png'],
       movieTitles: [],
       moviePosters: [], // an array of empty image sources  
     };
@@ -52,15 +51,93 @@ export default class HomePage extends Component {
       const moviePosters = [];
       const movieTitles = [];
       const movieIDSURL = [];
-      for (const movie in data.movie_reccs_dict){
-        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.movie_reccs_dict[movie]['poster'];
+      for (const movie in data.reccs_info_dict){
+        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.reccs_info_dict[movie]['poster'];
         moviePosters.push(posterURL);
         movieTitles.push(movie);
-        movieIDSURL.push('https://letterboxd.com/tmdb/' + data.movie_reccs_dict[movie]['id']);
+        movieIDSURL.push('https://letterboxd.com/tmdb/' + data.reccs_info_dict[movie]['id']);
       }
       this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
       console.log(data)
     });
+  }
+
+  handleRefreshClick = () =>{
+    if (!this.state.userName.trim()) {
+      // if the input field is empty or contains only whitespace characters
+      return;
+    }
+    this.setState({
+      moviePosters: ['','','','',''],
+      movieTitles: [],
+      movieIDSURL: [],
+      isLoading: true
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+          userName: this.state.userName
+      })
+    };
+    fetch('/MovieApp/refresh-user', requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        const moviePosters = [];
+        const movieTitles = [];
+        const movieIDSURL = [];
+        const movies = Object.entries(data.reccs_info_dict).slice(-5);
+        for (const [movie, info] of movies) {
+          const posterURL = 'https://image.tmdb.org/t/p/w300' + info['poster'];
+          moviePosters.push(posterURL);
+          movieTitles.push(movie);
+          movieIDSURL.push('https://letterboxd.com/tmdb/' + info['id']);
+        }
+        this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
+        console.log(data)
+      });      
+  }
+
+  handleShowMoreClick = () => {
+    if (!this.state.userName.trim()) {
+      // if the input field is empty or contains only whitespace characters
+      return;
+    }
+    this.setState({
+      moviePosters: ['','','','',''],
+      movieTitles: [],
+      movieIDSURL: [],
+      isLoading: true
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        userName: this.state.userName
+      })
+    };
+    fetch('/MovieApp/get-more', requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        const moviePosters = [];
+        const movieTitles = [];
+        const movieIDSURL = [];
+        const movies = Object.entries(data.reccs_info_dict).slice(-5);
+        for (const [movie, info] of movies) {
+          const posterURL = 'https://image.tmdb.org/t/p/w300' + info['poster'];
+          moviePosters.push(posterURL);
+          movieTitles.push(movie);
+          movieIDSURL.push('https://letterboxd.com/tmdb/' + info['id']);
+        }
+        this.setState({
+          moviePosters,
+          movieTitles,
+          movieIDSURL,
+          isLoading: false
+        });
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
   }
 
   render() {
@@ -87,7 +164,7 @@ export default class HomePage extends Component {
               {this.state.moviePosters.map((poster, index) => (
                 <div key={index} style={{ margin: "20px" }}>
                   <a href={this.state.movieIDSURL[index]}>
-                    <img
+                    <img className ="App-Poster"
                       src={poster}
                       style={{
                         width: "30vw",
@@ -102,7 +179,10 @@ export default class HomePage extends Component {
               ))}
               <div style={{ margin: "20px"}}>
                 {this.state.moviePosters.length > 0 && this.state.isLoading === false && (
-                  <button className="App-button">Show More</button>
+                  <div>
+                  <button className="App-button" onClick={this.handleShowMoreClick}>Show More </button>
+                  <button className="App-button" onClick={this.handleRefreshClick}>Refresh </button>
+                  </div>
                 )}
               </div>
             </>

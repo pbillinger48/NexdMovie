@@ -42,12 +42,18 @@ def get_reccomendations(movieDict):
             #break
         #i += 1
     recommendations = dict(sorted(recommendations.items(), key=lambda x: x[1], reverse=True))
-    #return recommendations
+    return recommendations
+
+            
+
+
+def getRecInfo(RecDict, curList):
     top_recommendations = {}
     counter = 0
-    for recommendation_title in recommendations:
-        top_recommendations[recommendation_title] = recommendations[recommendation_title]
-        counter += 1
+    for recommendation_title in RecDict:
+        if recommendation_title not in curList:
+            top_recommendations[recommendation_title] = RecDict[recommendation_title]
+            counter += 1
         if counter == 5:
             break
     
@@ -59,16 +65,14 @@ def get_reccomendations(movieDict):
             if data['total_results'] > 0:
                 poster_path = data['results'][0]['poster_path']
                 id = data['results'][0]['id']
-                posters[title] = {"id": id, "poster": poster_path}
+                curList[title] = {"id": id, "poster": poster_path}                   
+                                
     
-    return posters
-    return top_recommendations
-            
-
+    return curList
 #username = 'Greenellie'
 #user_films = get_Positive_user_films_dict(username)
 #reccs = get_reccomendations(user_films)
-#i=0
+#i=
 #for rec, rating in reccs.items():
     #print(f"{rec}: {rating}")
     

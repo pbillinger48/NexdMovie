@@ -95,7 +95,17 @@
 }
 
 
+.App-Poster{
+  width: "30vw";
+  height: "45vh";
+  max-width: "95%";
+  overflow: "hidden";
+}
 
+.App-Poster:hover{
+  transition: all .1s ease;
+  transform: scale(1.1);
+}
 
 
 

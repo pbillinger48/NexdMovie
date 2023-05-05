@@ -1,8 +1,8 @@
 from Scraper import get_user_films_dict, get_user_films_dict_optimized
-from EZReccomender import get_reccomendations
+from EZReccomender import get_reccomendations, getRecInfo
 
 
-userFilms = get_user_films_dict_optimized('pbillinger48')
+userFilms = get_user_films_dict_optimized('NexdMovieTest')
 for key, value in userFilms.items():
     print(f"{key}: {value}")
     
@@ -10,3 +10,18 @@ for key, value in userFilms.items():
 userRecs = get_reccomendations(userFilms)
 for key, value in userRecs.items():
     print(f"{key}: {value}")
+
+emptyRecs = []
+recInfo = getRecInfo(userRecs,emptyRecs)
+
+for key, value in recInfo.items():
+    print(f"{key}: {value}")
+
+recInfo = getRecInfo(userRecs, recInfo)
+for key, value in recInfo.items():
+    print(f"{key}: {value}")
+    
+recInfo = getRecInfo(userRecs, recInfo)
+for key, value in recInfo.items():
+    print(f"{key}: {value}")
+
