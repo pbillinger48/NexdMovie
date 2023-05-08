@@ -51,14 +51,15 @@ export default class HomePage extends Component {
       const moviePosters = [];
       const movieTitles = [];
       const movieIDSURL = [];
-      for (const movie in data.reccs_info_dict){
-        const posterURL = 'https://image.tmdb.org/t/p/w300' + data.reccs_info_dict[movie]['poster'];
-        moviePosters.push(posterURL);
-        movieTitles.push(movie);
-        movieIDSURL.push('https://letterboxd.com/tmdb/' + data.reccs_info_dict[movie]['id']);
-      }
-      this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
-      console.log(data)
+      const movies = Object.entries(data.reccs_info_dict).slice(-5);
+        for (const [movie, info] of movies) {
+          const posterURL = 'https://image.tmdb.org/t/p/w300' + info['poster'];
+          moviePosters.push(posterURL);
+          movieTitles.push(movie);
+          movieIDSURL.push('https://letterboxd.com/tmdb/' + info['id']);
+        }
+        this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
+        console.log(data)
     });
   }
 
@@ -128,13 +129,17 @@ export default class HomePage extends Component {
           moviePosters.push(posterURL);
           movieTitles.push(movie);
           movieIDSURL.push('https://letterboxd.com/tmdb/' + info['id']);
-        }
+        }    
+        if (JSON.stringify(Object.keys(data.reccs_info_dict)) === JSON.stringify(Object.keys(data.movie_reccs_dict))){
+          alert('No more NexdMovies left, rate more movies on Letterboxd for more!')
+        }   
         this.setState({
           moviePosters,
           movieTitles,
           movieIDSURL,
           isLoading: false
         });
+        
         console.log(data);
       })
       .catch((error) => console.error(error));
