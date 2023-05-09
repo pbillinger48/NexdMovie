@@ -111,7 +111,8 @@ export default class HomePage extends Component {
       moviePosters: ['','','','',''],
       movieTitles: [],
       movieIDSURL: [],
-      isLoading: true
+      isLoading: true,
+      
     });
     const requestOptions = {
       method: 'POST',
@@ -140,7 +141,7 @@ export default class HomePage extends Component {
           moviePosters,
           movieTitles,
           movieIDSURL,
-          isLoading: false
+          isLoading: false,
         });
         
         console.log(data);
@@ -156,7 +157,7 @@ export default class HomePage extends Component {
         </header>
         <header className="App-header">
           <p className="App-font">Insert Letterboxd Username: &nbsp;</p>
-          <input className="App-input" type="text" onChange={this.handleInputChange} />
+          <input className="App-input" type="text" onChange={this.handleInputChange} value={this.state.userName} />
           <button onClick={this.handleButtonClick} className="App-button">Enter Username</button>
         </header>
         <body className="App-Body">
