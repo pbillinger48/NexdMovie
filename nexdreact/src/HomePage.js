@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import logo from "./NexdMovieClear.png";
+
 import {MagnifyingGlass} from 'react-loader-spinner';
 
 
@@ -149,7 +149,7 @@ export default class HomePage extends Component {
     return (
       <div className="App">
         <header className="App-Title">
-          <img src={logo} alt="logo" height="150" width="200" />
+          <p height="260"> </p>
         </header>
         <header className="App-header">
           <p className="App-font">Insert Letterboxd Username: &nbsp;</p>
