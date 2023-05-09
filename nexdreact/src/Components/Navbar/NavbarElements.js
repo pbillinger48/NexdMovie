@@ -1,4 +1,3 @@
-import { FaBars } from "react-icons/fa";
 import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
   
@@ -16,8 +15,17 @@ export const NavLink = styled(Link)`
   padding: 0 1rem;
   height: 100%;
   cursor: pointer;
+  &:hover {
+    font-size: 1.3em;
+    img {
+      transform: scale(1.1);
+    }
+  }
   &.active {
     color: #ff8000;
+  }
+  img {
+    transition: all 0.1s ease-in-out;
   }
 `;
   

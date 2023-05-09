@@ -59,6 +59,9 @@ export default class HomePage extends Component {
           movieIDSURL.push('https://letterboxd.com/tmdb/' + info['id']);
         }
         this.setState({ moviePosters, movieTitles, movieIDSURL, isLoading: false });
+        if (Object.keys(data.movie_reccs_dict).length === 0) {
+          alert('User does not exist, or does not have any movies rated. Try someone else!');
+      }
         console.log(data)
     });
   }

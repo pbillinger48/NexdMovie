@@ -9,7 +9,7 @@ const Navbar = () => {
       <Nav>
         <NavMenu>
           <NavLink to ="/">
-            <img src={logo} alt="logo" height="150" width="200" />
+            <img src={logo} alt="logo" width="200" />
           </NavLink>
           <NavLink to="/about" activeStyle>
             About
