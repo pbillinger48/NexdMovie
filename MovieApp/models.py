@@ -4,11 +4,11 @@ from .Scraper import get_user_films_dict, get_Positive_user_films_dict, get_user
 import requests
 import json
 from .EZReccomender import get_reccomendations, getRecInfo
-#from .MovieListTransfer import gather_credits_and_info
 
 TMDB_API_KEY = 'a497a7718fd66875ff47bd0a20cd4b24'
 
 # Create your models here.
+#Not used in current iteration of project
 class Movie(models.Model):
     TmDbid = models.CharField(max_length=8, default="0", blank = True)
     title = models.CharField(max_length=100, default="No Title")
@@ -64,7 +64,8 @@ class Movie(models.Model):
             
         self.save()
 
-
+#Main User data object
+#Holds username, dictionary of seen films, dictionary of recommendation titles, and dictionary of info for movies currently being displayed
 class User(models.Model):
     userName = models.CharField(max_length=50, default="defaultUsername")
     user_films_dict = models.JSONField(default=dict)
@@ -73,16 +74,18 @@ class User(models.Model):
     #movies = models.ManyToManyField(Movie, related_name= 'movie_reccs')
     #moviereccs = models.ManyToManyField('Movie', related_name='reccomended_by')
     
+    #This function controlls what happens when a user object is saved
     def save(self, *args, **kwargs):
         if self.pk is None:  # only execute this block if the user is new
             self.user_films_dict = get_user_films_dict_optimized(self.userName)
             self.movie_reccs_dict = get_reccomendations(self.user_films_dict)
             self.reccs_info_dict = getRecInfo(self.movie_reccs_dict, self.reccs_info_dict)
         super().save(*args, **kwargs)
-
+    #This is the function that is called to update the user when the show more button is pressed
     def getMore(self):
         self.reccs_info_dict = getRecInfo(self.movie_reccs_dict, self.reccs_info_dict)
         self.save()
+    #This function is for version of project with tracked movie objects    
     #def create_movie_list(self):
         #self.movies.clear()
         #self.moviereccs.clear()

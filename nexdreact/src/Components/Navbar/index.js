@@ -1,3 +1,6 @@
+/*
+This creates the navigation bar that will be at top of page
+*/
 import React from "react";
 import logo from "./NexdMovieClear.png";
 import { Nav, NavLink, NavMenu } 

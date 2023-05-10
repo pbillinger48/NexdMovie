@@ -1,3 +1,6 @@
+/*
+Is the main foundational reactJS script for the site
+*/
 import './App.css';
 import Navbar from './Components/Navbar';
 import { BrowserRouter as Router, Routes, Route}
@@ -6,7 +9,6 @@ import HomePage from"./HomePage";
 import About from './About'
 function App() {  
   return (
-    //<HomePage/>
     <Router>
     <Navbar />
     <Routes>

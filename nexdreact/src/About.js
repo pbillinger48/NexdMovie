@@ -1,3 +1,6 @@
+/*
+This is the code that creates the about page, relatively simple discription of the site
+*/
 import React from "react";
 import './App.css';
 import logo from "./NexdMovieClear.png";

@@ -1,3 +1,7 @@
+/*
+Controlls some of the declaration and styling of the navbar elements
+*/
+
 import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
   

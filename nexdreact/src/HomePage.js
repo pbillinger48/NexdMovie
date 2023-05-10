@@ -1,13 +1,14 @@
+/*
+Is the reactJS for the homepage that does main recommendation work
+This is the most important UI for the program
+*/
 import React, { Component } from 'react';
 import './App.css';
-
 import {MagnifyingGlass} from 'react-loader-spinner';
-
-
-
 
 export default class HomePage extends Component {
   
+  //Creates and holds variables
   constructor(props) {
     super(props);
     this.state = {    
@@ -18,14 +19,14 @@ export default class HomePage extends Component {
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
-
+  //Keeps track of userName when it is changed in input field and helps bind it to userName variable
   handleInputChange = (event) => {
     this.setState({
-      userName: event.target.value,
-       // set displayUsername to false whenever the input field is changed
+      userName: event.target.value,     
     });
   }
-
+//Is the code that runs when the show more button is pressed
+//Gets the recommendations for user
   handleButtonClick(){
     if (!this.state.userName.trim()) {
       // if the input field is empty or contains only whitespace characters
@@ -65,7 +66,7 @@ export default class HomePage extends Component {
         console.log(data)
     });
   }
-
+//Recreates user and gets more recent updated version of recommendatioms
   handleRefreshClick = () =>{
     if (!this.state.userName.trim()) {
       // if the input field is empty or contains only whitespace characters
@@ -101,7 +102,7 @@ export default class HomePage extends Component {
         console.log(data)
       });      
   }
-
+//Gets new (ever increasingly less relevant) recommendations for user 
   handleShowMoreClick = () => {
     if (!this.state.userName.trim()) {
       // if the input field is empty or contains only whitespace characters
@@ -111,8 +112,7 @@ export default class HomePage extends Component {
       moviePosters: ['','','','',''],
       movieTitles: [],
       movieIDSURL: [],
-      isLoading: true,
-      
+      isLoading: true
     });
     const requestOptions = {
       method: 'POST',
@@ -148,7 +148,7 @@ export default class HomePage extends Component {
       })
       .catch((error) => console.error(error));
   }
-
+//Renders the HTML UI that will be used for homepage
   render() {
     return (
       <div className="App">

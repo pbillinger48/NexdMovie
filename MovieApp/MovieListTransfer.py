@@ -1,7 +1,11 @@
+"""
+This entire file is not currently used. In a version of the project where movie objects are needed these could possibly 
+be used as helper methods to transfer scraped data into movie objects with more movie information.
+"""
 import requests
 
 TMDB_API_KEY = 'a497a7718fd66875ff47bd0a20cd4b24'
-
+#Used to get movie info such as id, genre, overview, etc
 def get_movie_info(movie_title):
     """
     Helper function to get the movie info from TMDB API for a given movie title.
@@ -14,7 +18,7 @@ def get_movie_info(movie_title):
             # Return the first result
             return data['results'][0]
     return None
-
+#Used to get cast and crew
 def get_movie_credits(movie_id):
     """
     Helper function to get the movie credits from TMDB API for a given movie id.
@@ -32,7 +36,7 @@ def get_movie_credits(movie_id):
         return cast, crew
     return [], []
 
-
+#Combines movie info and cast and crew into a list of movies
 def gather_credits_and_info(movie_ratings):
 
     movies_with_ratings_and_credits = []
